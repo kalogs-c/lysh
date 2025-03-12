@@ -69,6 +69,15 @@ defmodule LyshWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end
+
+    live_session :url_shortner,
+      on_mount: [{LyshWeb.UserAuth, :ensure_authenticated}] do
+      live "/shortened_links", LinkLive.Index, :index
+      live "/shortened_links/new", LinkLive.Index, :new
+      live "/shortened_links/:id/edit", LinkLive.Index, :edit
+      live "/shortened_links/:id", LinkLive.Show, :show
+      live "/shortened_links/:id/show/edit", LinkLive.Show, :edit
+    end
   end
 
   scope "/", LyshWeb do

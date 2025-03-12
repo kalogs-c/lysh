@@ -9,3 +9,15 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+Lysh.Accounts.register_user(%{
+  name: "Mister User",
+  email: "mister_user@lysh.io",
+  password: "my_long_password"
+})
+
+Lysh.Accounts.register_user(%{
+  name: "Miss User",
+  email: "miss_user@lysh.io",
+  password: "my_long_password"
+})

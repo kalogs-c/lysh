@@ -4,9 +4,9 @@ defmodule LyshWeb.LinkLiveTest do
   import Phoenix.LiveViewTest
   import Lysh.ShortnerFixtures
 
-  @create_attrs %{original_url: "some original_url", hash_url: "some hash_url"}
-  @update_attrs %{original_url: "some updated original_url", hash_url: "some updated hash_url"}
-  @invalid_attrs %{original_url: nil, hash_url: nil}
+  @create_attrs %{original_url: "some original_url"}
+  @update_attrs %{original_url: "some updated original_url"}
+  @invalid_attrs %{original_url: nil}
 
   defp create_link(_) do
     link = link_fixture()

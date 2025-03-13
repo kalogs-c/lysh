@@ -20,7 +20,6 @@ defmodule LyshWeb.LinkLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:original_url]} type="text" label="Original url" />
-        <.input field={@form[:hash_url]} type="text" label="Hash url" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Link</.button>
         </:actions>

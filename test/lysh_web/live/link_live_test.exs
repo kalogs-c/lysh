@@ -47,7 +47,6 @@ defmodule LyshWeb.LinkLiveTest do
              |> form("#link-form", link: @create_attrs)
              |> render_submit()
 
-      open_browser(index_live)
       assert_patch(index_live, ~p"/shortened_links")
 
       html = render(index_live)

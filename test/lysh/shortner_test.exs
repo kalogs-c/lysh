@@ -25,13 +25,26 @@ defmodule Lysh.ShortnerTest do
 
       valid_attrs = %{
         original_url: "some original_url",
-        hash_url: "some hash_url",
         user_id: user.id
       }
 
       assert {:ok, %Link{} = link} = Shortner.create_link(valid_attrs)
       assert link.original_url == "some original_url"
-      assert link.hash_url == "some hash_url"
+      assert link.hash_url
+    end
+
+    test "create_link/1 with hash collision" do
+      user = Lysh.AccountsFixtures.user_fixture()
+
+      valid_attrs = %{
+        original_url: "some original_url",
+        user_id: user.id
+      }
+
+      {:ok, first_link} = Shortner.create_link(valid_attrs)
+      {:ok, second_link} = Shortner.create_link(valid_attrs)
+
+      assert first_link.hash_url <> second_link.hash_url
     end
 
     test "create_link/1 with invalid data returns error changeset" do
@@ -42,13 +55,12 @@ defmodule Lysh.ShortnerTest do
       link = link_fixture()
 
       update_attrs = %{
-        original_url: "some updated original_url",
-        hash_url: "some updated hash_url"
+        original_url: "some updated original_url"
       }
 
-      assert {:ok, %Link{} = link} = Shortner.update_link(link, update_attrs)
-      assert link.original_url == "some updated original_url"
-      assert link.hash_url == "some updated hash_url"
+      assert {:ok, %Link{} = updated_link} = Shortner.update_link(link, update_attrs)
+      assert updated_link.original_url == "some updated original_url"
+      assert updated_link.hash_url == link.hash_url
     end
 
     test "update_link/2 with invalid data returns error changeset" do

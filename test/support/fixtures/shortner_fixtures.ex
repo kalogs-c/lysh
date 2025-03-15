@@ -5,11 +5,6 @@ defmodule Lysh.ShortnerFixtures do
   """
 
   @doc """
-  Generate a unique link hash_url.
-  """
-  def unique_link_hash_url, do: "some hash_url#{System.unique_integer([:positive])}"
-
-  @doc """
   Generate a link.
   """
   def link_fixture(attrs \\ %{}) do
@@ -18,8 +13,7 @@ defmodule Lysh.ShortnerFixtures do
     {:ok, link} =
       attrs
       |> Enum.into(%{
-        hash_url: unique_link_hash_url(),
-        original_url: "some original_url",
+        original_url: Faker.Internet.url(),
         user_id: user.id
       })
       |> Lysh.Shortner.create_link()

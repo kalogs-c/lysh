@@ -15,7 +15,12 @@
 
 <.back navigate={~p"/shortened_links"}>Back to shortened_links</.back>
 
-<.modal :if={@live_action == :edit} id="link-modal" show on_cancel={JS.patch(~p"/shortened_links/#{@link}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="link-modal"
+  show
+  on_cancel={JS.patch(~p"/shortened_links/#{@link}")}
+>
   <.live_component
     module={LyshWeb.LinkLive.FormComponent}
     id={@link.id}

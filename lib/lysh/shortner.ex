@@ -37,6 +37,17 @@ defmodule Lysh.Shortner do
   """
   def get_link!(id), do: Repo.get!(Link, id)
 
+  def get_original_url!(hash) do
+    query =
+      from Link,
+        where: [hash_url: ^hash],
+        select: [:original_url]
+
+    query
+    |> Repo.one!()
+    |> Map.get(:original_url)
+  end
+
   @doc """
   Creates a link.
 

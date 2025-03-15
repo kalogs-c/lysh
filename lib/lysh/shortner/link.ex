@@ -22,9 +22,22 @@ defmodule Lysh.Shortner.Link do
     link
     |> cast(attrs, [:original_url, :user_id])
     |> validate_required([:original_url, :user_id])
+    |> maybe_add_http()
     |> maybe_hash_url()
     |> unique_constraint(:hash_url)
   end
+
+  defp maybe_add_http(%Ecto.Changeset{} = changeset) do
+    if url = get_change(changeset, :original_url) do
+      changeset
+      |> put_change(:original_url, maybe_add_http(url))
+    else
+      changeset
+    end
+  end
+
+  defp maybe_add_http("http" <> _after_http = original_url), do: original_url
+  defp maybe_add_http(without_http), do: "http://" <> without_http
 
   defp maybe_hash_url(changeset) do
     if original_url = get_change(changeset, :original_url) do

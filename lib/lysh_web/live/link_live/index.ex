@@ -6,7 +6,10 @@ defmodule LyshWeb.LinkLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :shortened_links, Shortner.list_shortened_links())}
+    user = socket.assigns.current_user
+    shortened_links = Shortner.list_shortened_links(user: user)
+
+    {:ok, stream(socket, :shortened_links, shortened_links)}
   end
 
   @impl true

@@ -15,6 +15,15 @@ defmodule Lysh.ShortnerTest do
       assert Shortner.list_shortened_links() == [link]
     end
 
+    test "list_shortened_links/1 with user criteria" do
+      user = Lysh.AccountsFixtures.user_fixture()
+      link = link_fixture(user_id: user.id)
+
+      _other_link = link_fixture()
+
+      assert Shortner.list_shortened_links(user: user) == [link]
+    end
+
     test "get_link!/1 returns the link with given id" do
       link = link_fixture()
       assert Shortner.get_link!(link.id) == link

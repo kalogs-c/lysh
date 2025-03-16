@@ -17,8 +17,27 @@ defmodule Lysh.Shortner do
       [%Link{}, ...]
 
   """
-  def list_shortened_links do
-    Repo.all(Link)
+  def list_shortened_links, do: list_shortened_links([])
+
+  def list_shortened_links(criteria) do
+    query = from(l in Link)
+
+    criteria
+    |> apply_criteria(query)
+    |> Repo.all()
+  end
+
+  defp apply_criteria(criteria, base_query) do
+    Enum.reduce(criteria, base_query, fn
+      {:user, user}, query ->
+        from l in query, where: l.user_id == ^user.id
+
+      {:preload, bindings}, query ->
+        preload(query, ^bindings)
+
+      _, query ->
+        query
+    end)
   end
 
   @doc """

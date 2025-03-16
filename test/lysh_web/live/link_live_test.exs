@@ -8,21 +8,18 @@ defmodule LyshWeb.LinkLiveTest do
   @update_attrs %{original_url: "some updated original_url"}
   @invalid_attrs %{original_url: nil}
 
-  defp create_link(_) do
-    link = link_fixture()
-    %{link: link}
+  defp login(%{conn: conn}) do
+    user = Lysh.AccountsFixtures.user_fixture()
+    %{conn: log_in_user(conn, user), user: user}
   end
 
-  defp login(%{conn: conn}) do
-    conn =
-      conn
-      |> log_in_user(Lysh.AccountsFixtures.user_fixture())
-
-    %{conn: conn}
+  defp create_link(%{user: user} = context) do
+    link = link_fixture(user_id: user.id)
+    Map.put_new(context, :link, link)
   end
 
   describe "Index" do
-    setup [:create_link, :login]
+    setup [:login, :create_link]
 
     test "lists all shortened_links", %{conn: conn, link: link} do
       {:ok, _index_live, html} = live(conn, ~p"/shortened_links")
@@ -86,7 +83,7 @@ defmodule LyshWeb.LinkLiveTest do
   end
 
   describe "Show" do
-    setup [:create_link, :login]
+    setup [:login, :create_link]
 
     test "displays link", %{conn: conn, link: link} do
       {:ok, _show_live, html} = live(conn, ~p"/shortened_links/#{link}")

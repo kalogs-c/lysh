@@ -10,23 +10,19 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-{:ok, mister} =
-  Lysh.Accounts.register_user(%{
-    name: "Mister User",
-    email: "mister_user@lysh.io",
-    password: "my_long_password"
-  })
+ids =
+  Enum.map(1..10, fn _ ->
+    {:ok, user} =
+      Lysh.Accounts.register_user(%{
+        name: Faker.Person.name(),
+        email: Faker.Internet.email(),
+        password: "my_long_password"
+      })
 
-{:ok, miss} =
-  Lysh.Accounts.register_user(%{
-    name: "Miss User",
-    email: "miss_user@lysh.io",
-    password: "my_long_password"
-  })
+    user.id
+  end)
 
-ids = [mister.id, miss.id]
-
-for _ <- 1..10 do
+for _ <- 1..1000 do
   Lysh.Shortner.create_link(%{
     original_url: Faker.Internet.url(),
     user_id: Enum.random(ids)

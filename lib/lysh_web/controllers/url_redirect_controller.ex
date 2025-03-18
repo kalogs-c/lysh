@@ -4,7 +4,16 @@ defmodule LyshWeb.UrlRedirectController do
   alias Lysh.Shortner
 
   def index(conn, %{"hash" => hash}) do
-    original_url = Shortner.get_original_url!(hash)
-    redirect(conn, external: original_url)
+    case Shortner.get_original_url(hash) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(LyshWeb.ErrorHTML)
+        |> render(:"404", %{})
+        |> halt
+
+      original_url ->
+        redirect(conn, external: original_url)
+    end
   end
 end

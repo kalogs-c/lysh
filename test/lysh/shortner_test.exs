@@ -29,9 +29,13 @@ defmodule Lysh.ShortnerTest do
       assert Shortner.get_link!(link.id) == link
     end
 
-    test "get_original_url!/1 return the original link with given hash" do
+    test "get_original_url/1 return the original link with given hash" do
       link = link_fixture()
-      assert Shortner.get_original_url!(link.hash_url) == link.original_url
+      assert Shortner.get_original_url(link.hash_url) == link.original_url
+    end
+
+    test "get_original_url/1 return nil with non existant link" do
+      assert Shortner.get_original_url("fake-hash") == nil
     end
 
     test "create_link/1 with valid data creates a link" do

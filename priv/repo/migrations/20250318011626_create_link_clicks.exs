@@ -12,7 +12,7 @@ defmodule Lysh.Repo.Migrations.CreateLinkClicks do
       add :browser, :string
       add :os, :string
       add :utm_source, :string
-      add :link_id, references(:links, on_delete: :delete_all, type: :binary_id)
+      add :link_id, references(:shortened_links, on_delete: :delete_all, type: :binary_id)
     end
 
     create index(:link_clicks, [:link_id])
